@@ -1,10 +1,11 @@
 class Smth:
-    def __init__(self, inp):
-        self.inp = inp
+    def __init__(self):
+        self.inp = input()
     def printString(self):
-        print(self.inp)
+        print((self.inp).upper())
 
-Smth(input()).printString()
+
+Smth().printString()
 
 
 class Square():

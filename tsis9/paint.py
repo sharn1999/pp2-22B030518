@@ -1,0 +1,240 @@
+import pygame, sys
+
+
+pygame.init()
+clock = pygame.time.Clock()
+screen_width = 700
+screen_height =500
+
+
+white = (255, 255, 255)
+blue = (67,238,250)
+red = (255, 0, 0)
+black = (0, 0, 0)
+green = (38,245,45)
+pink = (255,192,203)
+orange = (255,165,0)
+yellow = (255,255,0)
+violet = (177, 3, 252)
+pencolour = black
+
+screen =  pygame.display.set_mode((screen_width,screen_height))
+pygame.display.set_caption("Paint")
+screen.fill((white))
+
+backimg = pygame.image.load("paint.jpg").convert_alpha()
+backimg = pygame.transform.scale(backimg, (screen_width, screen_height))
+screen.blit(backimg, (0,0))
+
+draw_area = (119, 17, 562, 465)
+
+col1= (22, 81, 30, 34)
+col2= (56, 81, 34, 34)
+col3= (22, 120, 30, 33)
+col4= (56, 120, 34, 32)
+col5= (22, 156, 30, 33)
+col6= (56, 156, 34, 32)
+col7= (22, 192, 30, 33)
+col8= (56, 192, 34, 32)
+
+buttonselect = (22, 81, 30, 34)
+
+def drawrectangle():    
+    pygame.draw.rect(screen, black, col1)
+    pygame.draw.rect(screen,blue, col2,)
+    pygame.draw.rect(screen, red, col3)
+    pygame.draw.rect(screen, green, col4)
+    pygame.draw.rect(screen, pink, col5)
+    pygame.draw.rect(screen, orange, col6)
+    pygame.draw.rect(screen, yellow, col7)
+    pygame.draw.rect(screen, violet, col8)
+    pygame.draw.rect(screen, black, (13, 320, 40, 20))
+    pygame.draw.rect(screen, black, (13, 420, 20, 20))
+    pygame.draw.circle(screen, black, (80, 330), 12 )    
+    pygame.draw.lines(screen, black, True,[[70, 440], [80, 420],[90, 440]], 2)
+    pygame.draw.lines(screen, black, True,[[13, 480], [33, 460],[33, 480]], 2)
+    pygame.draw.lines(screen, black, True,[[70, 470], [80, 450],[90, 470], [80, 490]], 2)
+
+drawrectangle()
+pygame.mouse.set_cursor(*pygame.cursors.broken_x)
+is_rect = False
+is_circle = False
+is_kv = False
+is_triangle = False
+is_rtriangle = False
+is_rhomb = False
+while True:
+    drawrectangle()  
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        pygame.draw.rect(screen, white, buttonselect, 2)
+        t = pygame.mouse.get_pressed()
+        if t[0] == 1:     
+            mousepos = pygame.mouse.get_pos()
+            if 122 < mousepos[0] < 678 and 21 < mousepos[1] < 480:
+                if is_rect:
+                    pygame.draw.rect(screen, pencolour, (mousepos[0], mousepos[1], 100, 70), 2)
+                elif is_circle:
+                    pygame.draw.circle(screen, pencolour, (mousepos[0], mousepos[1]), 40, 2 )
+                elif is_kv:
+                    pygame.draw.rect(screen, pencolour, (mousepos[0], mousepos[1], 70, 70), 2)
+                elif is_triangle:
+                    pygame.draw.lines(screen, pencolour, True,[[mousepos[0]+20, mousepos[1]-20], [mousepos[0]+50, mousepos[1]+20],[mousepos[0]-10, mousepos[1]+20]], 2)
+                elif is_rtriangle:
+                    pygame.draw.lines(screen, pencolour, True,[[mousepos[0]+20, mousepos[1]+20], [mousepos[0]-30, mousepos[1]-10],[mousepos[0]-30, mousepos[1]+20]], 2)
+                elif is_rhomb:
+                    pygame.draw.lines(screen, black, True,[[mousepos[0], mousepos[1]], [mousepos[0]+20, mousepos[1]-30],[mousepos[0]+40, mousepos[1]], [mousepos[0]+20, mousepos[1]+30]], 2)
+                else: 
+                    pygame.draw.ellipse(screen, pencolour, (mousepos[0], mousepos[1], 12,12))
+            elif 13 < mousepos[0] < 53 and 320< mousepos[1] < 340:
+                is_rect = True
+                is_circle = False
+                is_kv = False
+                is_triangle = False
+                is_rtriangle = False
+                is_rhomb = False
+                pygame.draw.rect(screen, black, (13, 320, 40, 20))
+                pygame.draw.rect(screen, white, (13, 320, 40, 20), 2)
+            elif 68 < mousepos[0] < 92 and 318< mousepos[1] < 342:
+                is_circle = True
+                is_rect = False
+                is_kv = False
+                is_triangle = False
+                is_rtriangle = False
+                is_rhomb = False
+                pygame.draw.circle(screen, black, (80, 330), 12)    
+                pygame.draw.circle(screen, white, (80, 330), 12, 2 )
+            elif 13 < mousepos[0] < 53 and 420< mousepos[1] < 440:
+                is_kv = True
+                is_rect = False
+                is_circle = False
+                is_triangle = False
+                is_rtriangle = False
+                is_rhomb = False
+                pygame.draw.rect(screen, black, (13, 420, 20, 20))
+                pygame.draw.rect(screen, white, (13, 420, 20, 20), 2)
+            elif 70 < mousepos[0] < 90 and 450< mousepos[1] < 490:
+                is_kv = False
+                is_rect = False
+                is_circle = False
+                is_triangle = False
+                is_rtriangle = False
+                is_rhomb = True
+            elif 70 < mousepos[0] < 90 and 420< mousepos[1] < 440:
+                is_kv = False
+                is_triangle = True
+                is_rect = False
+                is_circle = False
+                is_rtriangle = False
+                is_rhomb = False
+            elif 13 < mousepos[0] < 33 and 460< mousepos[1] < 480:
+                is_kv = False
+                is_triangle = False
+                is_rtriangle = True
+                is_rect = False
+                is_circle = False
+                is_rhomb = False
+            elif 22 < mousepos[0] < 52 and 81 < mousepos[1] < 115:
+                pencolour = black    
+                buttonselect = (22, 81, 30, 34)
+                is_rect = False
+                is_circle = False
+                is_kv = False
+                is_triangle = False
+                is_rhomb = False
+                is_rtriangle = False
+            elif 56 < mousepos[0] < 90 and 81 < mousepos[1] < 115:
+                pencolour = blue
+                buttonselect = (56, 81, 34, 34)
+                is_rect = False
+                is_circle = False
+                is_kv = False
+                is_triangle = False
+                is_rhomb = False
+                is_rtriangle = False
+            elif 22 < mousepos[0] < 52 and 120 < mousepos[1] < 153:
+                pencolour = red
+                buttonselect = (22, 120, 30, 33)
+                is_rect = False
+                is_circle = False
+                is_triangle = False
+                is_rtriangle = False
+                is_rhomb = False
+                is_kv = False
+            elif 56 < mousepos[0] < 90 and 120 < mousepos[1] < 152:
+                pencolour = green
+                buttonselect = (56, 120, 34, 32)
+                is_rect = False
+                is_circle = False
+                is_triangle = False
+                is_kv = False
+                is_rhomb = False
+                is_rtriangle = False
+            elif 22 < mousepos[0] < 52 and 156 < mousepos[1] < 189:
+                pencolour = pink
+                buttonselect = (22, 156, 30, 33)
+                is_rect = False
+                is_circle = False
+                is_triangle = False
+                is_rhomb = False
+                is_rtriangle = False
+                is_kv = False
+            elif 56 < mousepos[0] < 90 and 156 < mousepos[1] < 188:
+                pencolour = orange
+                buttonselect = (56, 156, 34, 32)
+                is_rect = False
+                is_circle = False
+                is_rhomb = False
+                is_kv = False
+                is_rtriangle = False
+                is_triangle = False
+            elif 22 < mousepos[0] < 52 and 192 < mousepos[1] < 225:
+                pencolour = yellow
+                buttonselect = (22, 192, 30, 33)
+                is_rect = False
+                is_circle = False   
+                is_rhomb = False
+                is_rtriangle = False  
+                is_kv = False
+                is_triangle = False
+            elif 56 < mousepos[0] < 90 and 192 < mousepos[1] < 224:
+                pencolour = violet
+                buttonselect = (56, 192, 34, 32)
+                is_rect = False
+                is_circle = False
+                is_rhomb = False
+                is_rtriangle = False
+                is_kv = False
+                is_triangle = False
+            elif 13 < mousepos[0] < 54 and 247 < mousepos[1] < 285:
+                pencolour = white
+                pygame.mouse.set_cursor(*pygame.cursors.diamond)
+                is_rect = False
+                is_circle = False
+                is_triangle = False
+                is_rhomb = False
+                is_rtriangle = False
+                is_kv = False
+            elif 59 < mousepos[0] < 97 and 247 < mousepos[1] < 288:
+                pencolour = black
+                pygame.mouse.set_cursor(*pygame.cursors.broken_x)
+                buttonselect = (22, 81, 30, 34)
+                is_rect = False
+                is_circle = False
+                is_kv = False
+                is_rhomb = False
+                is_rtriangle = False
+                is_triangle = False
+            elif 15 < mousepos[0] < 96 and 363 < mousepos[1] < 400:                
+                pygame.draw.rect(screen, white, draw_area)
+                is_rect = False
+                is_circle = False
+                is_rhomb = False
+                is_kv = False
+                is_rtriangle = False
+                is_triangle = False
+        
+        pygame.display.update()
+        clock.tick(120)
